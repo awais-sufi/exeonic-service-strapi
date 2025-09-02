@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "solutions",
+  "info": {
+    "singularName": "solution",
+    "pluralName": "solutions",
+    "displayName": "solution"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "subHeading": {
+      "type": "string"
+    },
+    "solution": {
+      "type": "component",
+      "component": "components.solution",
+      "repeatable": true
+    }
+  }
+}

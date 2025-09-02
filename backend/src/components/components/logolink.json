@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_components_logolinks",
+  "info": {
+    "displayName": "logolink"
+  },
+  "options": {},
+  "attributes": {
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "link": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

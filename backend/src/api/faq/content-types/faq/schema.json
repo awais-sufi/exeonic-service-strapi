@@ -1,0 +1,50 @@
+{
+  "kind": "singleType",
+  "collectionName": "faqs",
+  "info": {
+    "singularName": "faq",
+    "pluralName": "faqs",
+    "displayName": "faq"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "faq": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "subHeading": {
+      "type": "string"
+    },
+    "question": {
+      "type": "component",
+      "component": "components.faq",
+      "repeatable": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "text": {
+      "type": "string"
+    },
+    "subtext": {
+      "type": "string"
+    },
+    "button": {
+      "type": "component",
+      "component": "components.button",
+      "repeatable": false
+    }
+  }
+}

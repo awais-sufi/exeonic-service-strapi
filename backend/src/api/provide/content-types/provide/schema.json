@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "provides",
+  "info": {
+    "singularName": "provide",
+    "pluralName": "provides",
+    "displayName": "provide"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "subHeading": {
+      "type": "string"
+    },
+    "provide": {
+      "type": "component",
+      "component": "components.provide",
+      "repeatable": true
+    }
+  }
+}
