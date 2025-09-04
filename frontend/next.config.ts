@@ -8,6 +8,10 @@ const nextConfig = {
         port: "1337",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "phenomenal-positivity-67d27683f9.media.strapiapp.com",
+      },
     ],
   },
 };
