@@ -1,19 +1,11 @@
-import { ProvideItem } from "./types";
 import Image from "next/image";
+import { fetchAPI } from "@/lib/api";
+import { ProvideItem, ProvideResponse, ProvideData } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
-interface ProvideProps {
-  heading: string;
-  subHeading: string;
-  provide: ProvideItem[];
-}
-
-export default function Provide({
-  heading,
-  subHeading,
-  provide,
-}: ProvideProps) {
+// Subcomponent for rendering the list
+function ProvideList({ heading, subHeading, provide }: ProvideData) {
   if (!provide || provide.length === 0) return null;
 
   return (
@@ -26,15 +18,15 @@ export default function Provide({
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {provide.map((item) => (
+        {provide.map((item: ProvideItem) => (
           <div
             key={item.id}
-            className="p-6 rounded-2xl cursor-pointer flex flex-col border-1  border-transparent hover:border-[#219ebc] transition"
+            className="p-6 rounded-2xl cursor-pointer flex flex-col border-1 border-transparent hover:border-[#219ebc] transition"
           >
             {/* Logo Image */}
             {item.logo?.data?.attributes?.url && (
               <Image
-                src={`${API_URL}${item.logo.data.attributes.url}`} // ✅ dynamic URL
+                src={`${API_URL}${item.logo.data.attributes.url}`}
                 alt={item.logo.data.attributes.alternativeText ?? item.heading}
                 width={80}
                 height={80}
@@ -50,5 +42,26 @@ export default function Provide({
         ))}
       </div>
     </section>
+  );
+}
+
+// Main self-fetching component
+export default async function Provide() {
+  const provideRes = await fetchAPI<ProvideResponse>("/api/provide?populate=*");
+  const provideData = provideRes.data;
+
+  if (!provideData) return null;
+
+  return (
+    <ProvideList
+      heading={provideData.heading}
+      subHeading={provideData.subHeading}
+      provide={provideData.provide}
+      id={provideData.id}
+      documentId={provideData.documentId}
+      createdAt={provideData.createdAt}
+      updatedAt={provideData.updatedAt}
+      publishedAt={provideData.publishedAt}
+    />
   );
 }

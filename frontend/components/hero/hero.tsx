@@ -1,9 +1,11 @@
+// components/hero/Hero.tsx
+import { fetchAPI } from "@/lib/api";
 import { Service } from "./types";
 
 const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
-export default function ServiceSection({ section }: { section: Service }) {
+async function ServiceSection({ section }: { section: Service }) {
   return (
     <section
       className="relative w-full h-[300px] flex items-center justify-center text-white"
@@ -15,7 +17,7 @@ export default function ServiceSection({ section }: { section: Service }) {
         backgroundPosition: "center",
       }}
     >
-      {/* Overlay for readability */}
+      {/* Overlay */}
       <div className="absolute inset-0" />
 
       {/* Content */}
@@ -26,4 +28,16 @@ export default function ServiceSection({ section }: { section: Service }) {
       </div>
     </section>
   );
+}
+
+// Main Hero component that fetches and renders
+export default async function Hero() {
+  const serviceRes = await fetchAPI<{ data: Service }>(
+    "/api/service?populate=*"
+  );
+  const serviceSection = serviceRes.data;
+
+  if (!serviceSection) return null;
+
+  return <ServiceSection section={serviceSection} />;
 }
