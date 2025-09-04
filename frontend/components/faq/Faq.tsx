@@ -14,7 +14,7 @@ export async function getFaqData(): Promise<FaqResponse["data"]> {
 
   // ✅ Use different populate strategies depending on environment
   const query = isProd
-    ? "/api/faq?populate[question]=*&populate[image]=*&populate[button]=*"
+    ? "/api/faq?populate[question]=*&populate[button]=*"
     : "/api/faq?populate=*";
 
   const res = await fetchAPI<FaqResponse>(query);
