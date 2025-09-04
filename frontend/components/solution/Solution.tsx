@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { WhyUs } from "./types";
+import { fetchAPI } from "@/lib/api";
 
-const API_URL =
-  "http://localhost:1337/api/solution?populate[solution][populate]=image";
+const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+
+// Strapi responses are usually wrapped like { data: ... }
+interface WhyUsResponse {
+  data: WhyUs;
+}
 
 export default function WhyUsSection() {
   const [data, setData] = useState<WhyUs | null>(null);
@@ -13,22 +18,16 @@ export default function WhyUsSection() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch(API_URL);
-        const json = await res.json();
+        const json = await fetchAPI<WhyUsResponse>(
+          "/api/solution?populate[solution][populate]=image"
+        );
 
         if (!json.data) {
           setError("No data found. Did you publish the single type in Strapi?");
           return;
         }
 
-        const mapped: WhyUs = {
-          id: json.data.id,
-          heading: json.data.heading,
-          subHeading: json.data.subHeading,
-          solution: json.data.solution ?? [],
-        };
-
-        setData(mapped);
+        setData(json.data);
       } catch (err) {
         setError("Failed to fetch data");
       }
@@ -53,7 +52,6 @@ export default function WhyUsSection() {
       {/* Responsive Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-10 gap-6 sm:gap-8">
         {data.solution.map((item, index) => {
-          // default span for desktop
           let spanClass = "lg:col-span-5";
           if (index === 0) spanClass = "lg:col-span-4";
           if (index === 1) spanClass = "lg:col-span-6";
@@ -65,7 +63,6 @@ export default function WhyUsSection() {
               key={item.id}
               className={`rounded-2xl p-6 sm:p-8 flex flex-col bg-[#f7fafc] ${spanClass}`}
             >
-              {/* Heading + subheading */}
               <h3 className="text-lg sm:text-xl font-bold mb-3">
                 {item.heading}
               </h3>
@@ -73,11 +70,10 @@ export default function WhyUsSection() {
                 {item.subHeading}
               </p>
 
-              {/* Big image */}
               {item.image && (
                 <div className="w-full flex justify-center sm:justify-end">
                   <img
-                    src={`http://localhost:1337${
+                    src={`${API_URL}${
                       item.image?.formats?.large?.url ||
                       item.image?.formats?.medium?.url ||
                       item.image?.url

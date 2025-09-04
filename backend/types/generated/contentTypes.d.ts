@@ -470,7 +470,7 @@ export interface ApiFooterFooter extends Struct.SingleTypeSchema {
       'api::footer.footer'
     > &
       Schema.Attribute.Private;
-    logo: Schema.Attribute.Component<'components.logolink', false>;
+    logo: Schema.Attribute.Media<'images' | 'files'>;
     paragraph: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     socaillink: Schema.Attribute.Component<'components.socail-link', true>;

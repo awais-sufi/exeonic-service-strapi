@@ -85,7 +85,7 @@ export interface ComponentsSocailLink extends Struct.ComponentSchema {
     displayName: 'SocailLink';
   };
   attributes: {
-    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    icon: Schema.Attribute.Media<'images' | 'files'>;
     url: Schema.Attribute.String;
   };
 }

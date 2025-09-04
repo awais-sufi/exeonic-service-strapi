@@ -1,6 +1,7 @@
-// components/Provide.tsx
 import { ProvideItem } from "./types";
 import Image from "next/image";
+
+const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
 interface ProvideProps {
   heading: string;
@@ -33,7 +34,7 @@ export default function Provide({
             {/* Logo Image */}
             {item.logo?.data?.attributes?.url && (
               <Image
-                src={`http://localhost:1337${item.logo.data.attributes.url}`}
+                src={`${API_URL}${item.logo.data.attributes.url}`} // ✅ dynamic URL
                 alt={item.logo.data.attributes.alternativeText ?? item.heading}
                 width={80}
                 height={80}

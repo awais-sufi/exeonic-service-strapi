@@ -12,9 +12,12 @@
   "pluginOptions": {},
   "attributes": {
     "logo": {
-      "type": "component",
-      "component": "components.logolink",
-      "repeatable": false
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
     },
     "paragraph": {
       "type": "text"

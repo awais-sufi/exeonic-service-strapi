@@ -1,83 +1,104 @@
-// app/components/Footer.tsx
-import React from "react";
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import { FooterData } from "./types";
+import { useEffect, useState } from "react";
+import { FooterData, ApiResponse } from "./types";
+import { fetchAPI } from "@/lib/api"; // 👈 adjust path if your fetchAPI is in lib/api.ts
 
-// Fetch function
-async function getFooterData(): Promise<FooterData> {
-  const res = await fetch("http://localhost:1337/api/footer?populate=*", {
-    cache: "no-store", // ensure fresh data
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch footer data");
-  }
-  const json = await res.json();
+export default function Footer() {
+  const [footer, setFooter] = useState<FooterData | null>(null);
 
-  const data = json.data;
+  useEffect(() => {
+    const loadFooter = async () => {
+      try {
+        const data: ApiResponse = await fetchAPI<ApiResponse>(
+          "/api/footer?populate=*"
+        );
+        console.log("API Response:", data);
 
-  return {
-    heading: data.heading,
-    heading1: data.heading1,
-    heading2: data.heading2,
-    subHeading: data.subHeading,
-    paragraph: data.paragraph,
-    email: data.email,
-    lasttext: data.lasttext,
-    logo: data.logo,
-    socaillink: data.socaillink,
-    link: data.link,
-    link1: data.link1,
-    button: data.button,
-  };
-}
+        if (data.data) {
+          setFooter(data.data); // ✅ matches corrected types
+        } else {
+          console.warn("No footer data found");
+        }
+      } catch (err) {
+        console.error("Footer fetch error:", err);
+      }
+    };
 
-const Footer = async () => {
-  const data = await getFooterData();
+    loadFooter();
+  }, []);
+
+  if (!footer) return <p className="text-center mt-10">Loading footer...</p>;
 
   return (
-    <footer className="bg-[#102e3c] text-white py-12 px-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 my-20">
-        {/* Logo & Description */}
+    <footer className="bg-[#102e3c] text-white py-20">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Logo & Paragraph */}
         <div>
-          <Link href={data.logo.link}>
-            <h1 className="text-2xl font-bold mb-4">Logo</h1>
-          </Link>
-          <p>{data.paragraph}</p>
-          <div className="flex space-x-4 mt-4">
-            {data.socaillink.map((social) => (
+          <Image
+            src={`${
+              process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+            }${footer.logo.url}`}
+            alt={footer.logo.alternativeText || "Logo"}
+            width={58}
+            height={58}
+            className="mb-4 rounded-xl"
+          />
+          <p className="text-white font-semibold text-lg leading-relaxed mb-4">
+            {footer.paragraph}
+          </p>
+          {/* Social Icons */}
+          <div className="flex gap-4 mt-4">
+            {footer.socaillink?.map((item) => (
               <Link
-                key={social.id}
-                href={social.url}
-                className="hover:text-[#219ebc]"
+                key={item.id}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-white border border-gray-300 rounded-full p-2"
               >
-                {social.url.replace("/", "")}
+                <i
+                  className={
+                    typeof item.icon === "string"
+                      ? item.icon
+                      : item.icon?.url || ""
+                  }
+                ></i>
               </Link>
             ))}
           </div>
         </div>
 
         {/* Quick Links */}
-        <div className="text-center">
-          <h2 className="font-semibold mb-12">{data.heading}</h2>
-          <ul className="space-y-5">
-            {data.link.map((nav) => (
-              <li key={nav.id}>
-                <Link href={nav.url} className="hover:text-[#219ebc]">
-                  {nav.text}
+        <div className="md:text-center">
+          <h3 className="font-semibold  text-lg my-10">{footer.heading}</h3>
+          <ul className="space-y-6">
+            {footer.link.map((item) => (
+              <li key={item.id}>
+                <Link
+                  href={item.url}
+                  className="text-white  font-semibold text-md hover:text-[#219ebc] "
+                >
+                  {item.text}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Other Links */}
+        {/* Others */}
         <div>
-          <h2 className="font-semibold mb-12">{data.heading1}</h2>
-          <ul className="space-y-5">
-            {data.link1.map((nav) => (
-              <li key={nav.id}>
-                <Link href={nav.url} className="hover:text-[#219ebc]">
-                  {nav.text}
+          <h3 className="font-semibold text-lg my-10">{footer.heading1}</h3>
+          <ul className="space-y-6">
+            {footer.link1.map((item) => (
+              <li key={item.id}>
+                <Link
+                  href={item.url}
+                  className="text-white font-semibold text-md hover:text-[#219ebc]"
+                >
+                  {item.text}
                 </Link>
               </li>
             ))}
@@ -86,26 +107,31 @@ const Footer = async () => {
 
         {/* Newsletter */}
         <div>
-          <h2 className="font-semibold mb-2">{data.heading2}</h2>
-          <p className="mb-4">{data.subHeading}</p>
-          <div className="flex flex-col sm:flex-row gap-2">
+          <h3 className="font-semibold text-lg mt-10 mb-5">
+            {footer.heading2}
+          </h3>
+          <p className="text-white text-md font-semibold mb-4">
+            {footer.subHeading}
+          </p>
+          <div className="flex">
             <input
               type="email"
               placeholder="Enter your email"
-              className="p-2 rounded-md bg-white text-gray-900 flex-1"
+              className="px-3 py-2 w-full rounded-l bg-white text-gray-800 text-sm outline-none"
             />
-            <button className="bg-[#9ca3af] hover:bg-[#219ebc] text-white px-4 py-2 rounded-md">
-              {data.button.text}
-            </button>
+            <Link
+              href={footer.button.url}
+              className="bg-gray-400 text-white px-4 py-2 rounded-r hover:bg-[#219ebc] text-sm"
+            >
+              {footer.button.text}
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Bottom */}
-      <hr className="border-[#374151] max-w-6xl mx-auto" />
-      <div className="text-md text-center mt-6 mb-13">{data.lasttext}</div>
+      <div className="mt-10 text-center text-white text-md font-semibold border-t border-gray-700 pt-6 max-w-6xl mx-auto">
+        {footer.lasttext}
+      </div>
     </footer>
   );
-};
-
-export default Footer;
+}

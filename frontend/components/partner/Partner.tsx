@@ -1,17 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PartnerResponse } from "./types";
+import { fetchAPI } from "@/lib/api"; // ✅ centralized API helper
 
 async function getPartnerData(): Promise<PartnerResponse["data"]> {
-  const res = await fetch("http://localhost:1337/api/partner?populate=*", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch Partner section data");
-  }
-
-  const data: PartnerResponse = await res.json();
+  const data: PartnerResponse = await fetchAPI<PartnerResponse>(
+    "/api/partner?populate=*"
+  );
   return data.data;
 }
 
@@ -49,7 +44,9 @@ export default async function Partner() {
           {partner.image?.url && (
             <div className="flex justify-center order-1">
               <Image
-                src={`http://localhost:1337${partner.image.url}`}
+                src={`${
+                  process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+                }${partner.image.url}`} // ✅ dynamic base URL
                 alt={partner.image.alternativeText ?? "Partner image"}
                 width={450}
                 height={310}

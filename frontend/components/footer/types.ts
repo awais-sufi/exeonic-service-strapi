@@ -1,38 +1,52 @@
-// app/types.ts
-
-export interface Logo {
-  id: number;
-  link: string;
-}
-
-export interface SocialLink {
+export type Logo = {
   id: number;
   url: string;
-}
+  alternativeText: string | null;
+  width: number;
+  height: number;
+};
 
-export interface NavLink {
+export type LinkItem = {
   id: number;
   text: string;
   url: string;
-}
+};
 
-export interface Button {
+export type Button = {
   id: number;
   text: string;
-  url: string | null;
-}
+  url: string;
+};
 
-export interface FooterData {
+export type Media = {
+  id: number;
+  url: string;
+  alternativeText: string | null;
+  width: number;
+  height: number;
+};
+
+export type SocialLink = {
+  id: number;
+  url: string;
+  icon: Media; // ✅ now matches your Strapi response
+};
+
+export type FooterData = {
+  id: number;
+  paragraph: string;
   heading: string;
   heading1: string;
   heading2: string;
   subHeading: string;
-  paragraph: string;
-  email: string | null;
   lasttext: string;
   logo: Logo;
   socaillink: SocialLink[];
-  link: NavLink[];
-  link1: NavLink[];
+  link: LinkItem[];
+  link1: LinkItem[];
   button: Button;
-}
+};
+
+export type ApiResponse = {
+  data: FooterData;
+};

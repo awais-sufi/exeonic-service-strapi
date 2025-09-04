@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { fetchAPI } from "@/lib/api";
 import { FaqResponse } from "./types";
 import {
   Accordion,
@@ -8,16 +9,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"; // shadcn/ui accordion
 
-async function getFaqData(): Promise<FaqResponse["data"]> {
-  const res = await fetch("http://localhost:1337/api/faq?populate=*", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch FAQ data");
-  }
-
-  const data: FaqResponse = await res.json();
+export async function getFaqData(): Promise<FaqResponse["data"]> {
+  const data = await fetchAPI<FaqResponse>("/api/faq?populate=*");
   return data.data;
 }
 

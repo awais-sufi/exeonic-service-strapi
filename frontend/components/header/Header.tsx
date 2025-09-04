@@ -1,4 +1,3 @@
-// components/Header.tsx
 "use client";
 
 import Image from "next/image";
@@ -6,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HeaderData, ApiResponse } from "./types";
 import { Menu, X } from "lucide-react";
+import { fetchAPI } from "@/lib/api"; // ✅ import helper
 
 export default function Header() {
   const [header, setHeader] = useState<HeaderData | null>(null);
@@ -14,10 +14,9 @@ export default function Header() {
   useEffect(() => {
     const fetchHeader = async () => {
       try {
-        const res = await fetch(
-          "http://localhost:1337/api/header?populate[header][populate][0]=logo&populate[header][populate][1]=link&populate[header][populate][2]=button"
+        const data: ApiResponse = await fetchAPI<ApiResponse>(
+          "/api/header?populate[header][populate][0]=logo&populate[header][populate][1]=link&populate[header][populate][2]=button"
         );
-        const data: ApiResponse = await res.json();
 
         if (data.data.header.length > 0) {
           setHeader(data.data.header[0]);
