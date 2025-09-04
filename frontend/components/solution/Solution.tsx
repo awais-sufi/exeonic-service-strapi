@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { WhyUs } from "./types";
 import { fetchAPI } from "@/lib/api";
+import Image from "next/image";
 
 const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
@@ -28,7 +29,7 @@ export default function WhyUsSection() {
         }
 
         setData(json.data);
-      } catch (err) {
+      } catch {
         setError("Failed to fetch data");
       }
     }
@@ -72,7 +73,7 @@ export default function WhyUsSection() {
 
               {item.image && (
                 <div className="w-full flex justify-center sm:justify-end">
-                  <img
+                  <Image
                     src={`${API_URL}${
                       item.image?.formats?.large?.url ||
                       item.image?.formats?.medium?.url ||

@@ -47,7 +47,15 @@ function ProvideList({ heading, subHeading, provide }: ProvideData) {
 
 // Main self-fetching component
 export default async function Provide() {
-  const provideRes = await fetchAPI<ProvideResponse>("/api/provide?populate=*");
+  // Detect if local vs production
+  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "";
+  const isLocal = strapiUrl.includes("localhost");
+
+  const query = isLocal
+    ? "/api/provide?populate=*" // local dev
+    : "/api/provide?populate[provide][populate]=logo"; // Vercel / Strapi Cloud
+
+  const provideRes = await fetchAPI<ProvideResponse>(query);
   const provideData = provideRes.data;
 
   if (!provideData) return null;
