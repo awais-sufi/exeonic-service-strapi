@@ -10,8 +10,20 @@ import {
 } from "@/components/ui/accordion"; // shadcn/ui accordion
 
 export async function getFaqData(): Promise<FaqResponse["data"]> {
-  const data = await fetchAPI<FaqResponse>("/api/faq?populate=*");
-  return data.data;
+  const isProd = process.env.NODE_ENV === "production";
+
+  // ✅ Use different populate strategies depending on environment
+  const query = isProd
+    ? "/api/faq?populate[question]=*&populate[image]=*&populate[button]=*"
+    : "/api/faq?populate=*";
+
+  const res = await fetchAPI<FaqResponse>(query);
+
+  if (!res?.data) {
+    throw new Error("Failed to fetch FAQ data from Strapi");
+  }
+
+  return res.data;
 }
 
 export default async function Faq() {
