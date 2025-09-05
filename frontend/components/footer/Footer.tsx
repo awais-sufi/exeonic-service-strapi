@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FooterData, ApiResponse } from "./types";
 import { fetchAPI } from "@/lib/api";
-import { FaFacebook, FaLinkedin } from "react-icons/fa"; // added more
+import { FaFacebook, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
   const [footer, setFooter] = useState<FooterData | null>(null);
@@ -16,8 +16,6 @@ export default function Footer() {
         const data: ApiResponse = await fetchAPI<ApiResponse>(
           "/api/footer?populate=*"
         );
-        console.log("API Response:", data);
-
         if (data.data) {
           setFooter(data.data);
         } else {
@@ -33,15 +31,15 @@ export default function Footer() {
 
   if (!footer) return <p className="text-center mt-10">Loading footer...</p>;
 
-  // ✅ social icon map
   const iconMap: Record<string, React.ReactNode> = {
-    facebook: <FaFacebook size={18} />, // added size for visibility
+    facebook: <FaFacebook size={18} />,
     linkedin: <FaLinkedin size={18} />,
   };
 
   return (
     <footer className="bg-[#102e3c] text-white py-20">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      {/* ✅ Mobile padding only */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 px-6 md:px-0">
         {/* Logo & Paragraph */}
         <div>
           <Image
@@ -64,11 +62,9 @@ export default function Footer() {
           </p>
 
           {/* Social Icons */}
-          <div className="flex gap-4 mt-4">
+          <div className="flex gap-4 mt-4 flex-wrap">
             {footer.socaillink?.map((item) => {
-              const key = item.logoText?.trim().toLowerCase() || ""; // ✅ trims space + lowercase
-              console.log("Social link:", item.logoText, "→", key);
-
+              const key = item.logoText?.trim().toLowerCase() || "";
               return (
                 <Link
                   key={item.id}
@@ -85,9 +81,11 @@ export default function Footer() {
         </div>
 
         {/* Quick Links */}
-        <div className="md:text-center">
-          <h3 className="font-semibold  text-lg my-10">{footer.heading}</h3>
-          <ul className="space-y-6">
+        <div>
+          <h3 className="font-semibold md:text-center text-lg my-6 md:my-10">
+            {footer.heading}
+          </h3>
+          <ul className="space-y-4 md:text-center md:space-y-6">
             {footer.link.map((item) => (
               <li key={item.id}>
                 <Link
@@ -103,8 +101,10 @@ export default function Footer() {
 
         {/* Others */}
         <div>
-          <h3 className="font-semibold text-lg my-10">{footer.heading1}</h3>
-          <ul className="space-y-6">
+          <h3 className="font-semibold text-lg my-6 md:my-10">
+            {footer.heading1}
+          </h3>
+          <ul className="space-y-4 md:space-y-6">
             {footer.link1.map((item) => (
               <li key={item.id}>
                 <Link
@@ -120,21 +120,21 @@ export default function Footer() {
 
         {/* Newsletter */}
         <div>
-          <h3 className="font-semibold text-lg mt-10 mb-5">
+          <h3 className="font-semibold text-lg mt-6 md:mt-10 mb-4 md:mb-5">
             {footer.heading2}
           </h3>
           <p className="text-white text-md font-semibold mb-4">
             {footer.subHeading}
           </p>
-          <div className="flex">
+          <div className="flex flex-col sm:flex-row items-start sm:items-stretch gap-3 sm:gap-0">
             <input
               type="email"
               placeholder="Enter your email"
-              className="px-3 py-2 w-full rounded-l bg-white text-gray-800 text-sm outline-none"
+              className="px-3 py-2 w-full rounded sm:rounded-l bg-white text-gray-800 text-sm outline-none"
             />
             <Link
               href={footer.button.url}
-              className="bg-gray-400 text-white px-4 py-2 rounded-r hover:bg-[#219ebc] text-sm"
+              className="bg-gray-400 text-white px-6 py-2 rounded sm:rounded-r hover:bg-[#219ebc] text-sm w-full sm:w-auto text-center"
             >
               {footer.button.text}
             </Link>
@@ -142,7 +142,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mt-10 text-center text-white text-md font-semibold border-t border-gray-700 pt-6 max-w-6xl mx-auto">
+      <div className="mt-10 text-start text-white text-md font-semibold border-t border-gray-700 pt-6 max-w-6xl mx-auto px-6 md:px-0">
         {footer.lasttext}
       </div>
     </footer>

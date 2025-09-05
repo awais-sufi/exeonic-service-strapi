@@ -14,7 +14,7 @@ export default async function Partner() {
   const partner = await getPartnerData();
 
   return (
-    <section className="bg-gray-100">
+    <section>
       {/* Container to add margin around the bg-color */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-[#219ebc] rounded-3xl p-6 sm:p-22 grid gap-8 md:grid-cols-2 items-center">
