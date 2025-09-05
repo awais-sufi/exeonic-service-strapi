@@ -1,3 +1,4 @@
+// config/middlewares.js
 module.exports = [
   "strapi::errors",
   "strapi::security",
@@ -5,15 +6,19 @@ module.exports = [
     name: "strapi::cors",
     config: {
       enabled: true,
-      origin: [
-        "http://localhost:3000", // local dev
-        /^https:\/\/.*\.vercel\.app$/, // allow all vercel.app subdomains
-        "https://exeonic-service-strapi-fpt3.vercel.app/", // production frontend
-        "https://www.your-frontend.com", // optional www alias
-      ],
+      origin: (origin) => {
+        if (!origin) return true; // allow server-to-server calls
+        return (
+          [
+            "http://localhost:3000",
+            "https://exeonic-service-strapi-fpt3.vercel.app",
+            "https://www.your-frontend.com",
+          ].includes(origin) || /^https:\/\/.*\.vercel\.app$/.test(origin)
+        );
+      },
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-      headers: ["Content-Type", "Authorization", "Origin", "Accept"], // optional but safer
-      keepHeadersOnError: true, // lets Strapi send CORS headers even on errors
+      headers: ["Content-Type", "Authorization", "Origin", "Accept"],
+      keepHeadersOnError: true,
     },
   },
   "strapi::poweredBy",
