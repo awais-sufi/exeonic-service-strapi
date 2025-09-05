@@ -44,9 +44,14 @@ export default async function Partner() {
           {partner.image?.url && (
             <div className="flex justify-center order-1">
               <Image
-                src={`${
-                  process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
-                }${partner.image.url}`} // ✅ dynamic base URL
+                src={
+                  partner.image.url.startsWith("http")
+                    ? partner.image.url // already absolute URL
+                    : `${
+                        process.env.NEXT_PUBLIC_STRAPI_URL ||
+                        "http://localhost:1337"
+                      }${partner.image.url}` // relative URL
+                }
                 alt={partner.image.alternativeText ?? "Partner image"}
                 width={450}
                 height={310}

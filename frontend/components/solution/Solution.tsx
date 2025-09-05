@@ -74,11 +74,23 @@ export default function WhyUsSection() {
               {item.image && (
                 <div className="w-full flex justify-center sm:justify-end">
                   <Image
-                    src={`${API_URL}${
-                      item.image?.formats?.large?.url ||
-                      item.image?.formats?.medium?.url ||
-                      item.image?.url
-                    }`}
+                    src={
+                      (
+                        item.image?.formats?.large?.url ||
+                        item.image?.formats?.medium?.url ||
+                        item.image?.url
+                      )?.startsWith("http")
+                        ? item.image.formats?.large?.url ||
+                          item.image.formats?.medium?.url ||
+                          item.image.url // absolute URL, use as is
+                        : `${API_URL}${
+                            item.image?.formats?.large?.url ||
+                            item.image?.formats?.medium?.url ||
+                            item.image?.url
+                          }` // relative URL, prepend API_URL
+                    }
+                    width={500}
+                    height={500}
                     alt={item.image?.alternativeText || item.heading}
                     className="rounded-xl object-contain max-h-48 sm:max-h-60"
                   />

@@ -38,14 +38,20 @@ export default function Footer() {
         {/* Logo & Paragraph */}
         <div>
           <Image
-            src={`${
-              process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
-            }${footer.logo.url}`}
+            src={
+              footer.logo.url.startsWith("http")
+                ? footer.logo.url // already absolute URL
+                : `${
+                    process.env.NEXT_PUBLIC_STRAPI_URL ||
+                    "http://localhost:1337"
+                  }${footer.logo.url}` // relative URL
+            }
             alt={footer.logo.alternativeText || "Logo"}
             width={58}
             height={58}
             className="mb-4 rounded-xl"
           />
+
           <p className="text-white font-semibold text-lg leading-relaxed mb-4">
             {footer.paragraph}
           </p>

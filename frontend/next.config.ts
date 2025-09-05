@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    domains: ["phenomenal-positivity-67d27683f9.media.strapiapp.com"],
     remotePatterns: [
       {
         protocol: "http",

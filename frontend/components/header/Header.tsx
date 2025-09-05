@@ -37,7 +37,11 @@ export default function Header() {
         {/* Logo */}
         <Link href="/">
           <Image
-            src={`http://localhost:1337${header.logo.url}`}
+            src={
+              header.logo.url.startsWith("http")
+                ? header.logo.url // already absolute
+                : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${header.logo.url}` // relative URL, prepend API
+            }
             alt={header.logo.alternativeText || "Logo"}
             width={100}
             height={30}
