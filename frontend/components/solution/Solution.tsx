@@ -5,7 +5,8 @@ import { WhyUs } from "./types";
 import { fetchAPI } from "@/lib/api";
 import Image from "next/image";
 
-const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+const API_URL =
+  process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
 
 // Strapi responses are usually wrapped like { data: ... }
 interface WhyUsResponse {

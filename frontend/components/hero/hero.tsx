@@ -3,7 +3,7 @@ import { Service } from "./types";
 import { fetchAPI } from "@/lib/api";
 
 const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+  process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
 
 interface ServiceSectionProps {
   section: Service;

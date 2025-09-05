@@ -48,7 +48,7 @@ export default async function Partner() {
                   partner.image.url.startsWith("http")
                     ? partner.image.url // already absolute URL
                     : `${
-                        process.env.NEXT_PUBLIC_STRAPI_URL ||
+                        process.env.NEXT_PUBLIC_STRAPI_API_URL ||
                         "http://localhost:1337"
                       }${partner.image.url}` // relative URL
                 }

@@ -2,7 +2,8 @@ import Image from "next/image";
 import { fetchAPI } from "@/lib/api";
 import { ProvideItem, ProvideResponse, ProvideData } from "./types";
 
-const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+const API_URL =
+  process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
 
 // Subcomponent for rendering the list
 function ProvideList({ heading, subHeading, provide }: ProvideData) {
@@ -54,7 +55,7 @@ function ProvideList({ heading, subHeading, provide }: ProvideData) {
 // Main self-fetching component
 export default async function Provide() {
   // Detect if local vs production
-  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "";
+  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL || "";
   const isLocal = strapiUrl.includes("localhost");
 
   const query = isLocal
