@@ -1,25 +1,29 @@
 // components/hero/Hero.tsx
-import { fetchAPI } from "@/lib/api";
 import { Service } from "./types";
+import { fetchAPI } from "@/lib/api";
 
 const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
-async function ServiceSection({ section }: { section: Service }) {
+interface ServiceSectionProps {
+  section: Service;
+}
+
+function ServiceSection({ section }: ServiceSectionProps) {
+  // Handle full or relative URL from Strapi
+  const bgUrl =
+    section.background.formats?.large?.url || section.background.url;
+  const imageUrl = bgUrl.startsWith("http") ? bgUrl : `${STRAPI_URL}${bgUrl}`;
+
   return (
     <section
       className="relative w-full h-[300px] flex items-center justify-center text-white"
       style={{
-        backgroundImage: `url(${STRAPI_URL}${
-          section.background.formats?.large?.url || section.background.url
-        })`,
+        backgroundImage: `url(${imageUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* Overlay */}
-      <div className="absolute inset-0" />
-
       {/* Content */}
       <div className="relative z-10 text-center px-4">
         <h2 className="text-3xl md:text-5xl text-black font-semibold">
@@ -30,14 +34,19 @@ async function ServiceSection({ section }: { section: Service }) {
   );
 }
 
-// Main Hero component that fetches and renders
+// Main Hero component
 export default async function Hero() {
-  const serviceRes = await fetchAPI<{ data: Service }>(
-    "/api/service?populate=*"
-  );
-  const serviceSection = serviceRes.data;
+  try {
+    const serviceRes = await fetchAPI<{ data: Service }>(
+      "/api/service?populate=*"
+    );
+    const serviceSection = serviceRes.data;
 
-  if (!serviceSection) return null;
+    if (!serviceSection) return null;
 
-  return <ServiceSection section={serviceSection} />;
+    return <ServiceSection section={serviceSection} />;
+  } catch (error) {
+    console.error("Error fetching Hero section:", error);
+    return null;
+  }
 }
