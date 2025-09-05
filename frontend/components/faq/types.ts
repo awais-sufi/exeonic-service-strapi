@@ -45,7 +45,7 @@ export interface FaqImage {
 
 export interface FaqButton {
   id: number;
-  label: string;
+  text: string;
   url: string;
 }
 

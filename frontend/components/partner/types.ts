@@ -40,7 +40,7 @@ export interface PartnerImage {
 
 export interface PartnerButton {
   id: number;
-  label: string;
+  text: string;
   url: string;
 }
 

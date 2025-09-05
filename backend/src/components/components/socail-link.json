@@ -5,15 +5,10 @@
   },
   "options": {},
   "attributes": {
-    "icon": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "images",
-        "files"
-      ]
-    },
     "url": {
+      "type": "string"
+    },
+    "logoText": {
       "type": "string"
     }
   },

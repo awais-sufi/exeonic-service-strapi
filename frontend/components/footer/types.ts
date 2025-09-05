@@ -24,12 +24,13 @@ export type Media = {
   alternativeText: string | null;
   width: number;
   height: number;
+  data: string;
 };
 
 export type SocialLink = {
   id: number;
   url: string;
-  icon: Media; // ✅ now matches your Strapi response
+  logoText: string;
 };
 
 export type FooterData = {

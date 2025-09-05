@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FooterData, ApiResponse } from "./types";
-import { fetchAPI } from "@/lib/api"; // 👈 adjust path if your fetchAPI is in lib/api.ts
+import { fetchAPI } from "@/lib/api";
+import { FaFacebook, FaLinkedin } from "react-icons/fa"; // added more
 
 export default function Footer() {
   const [footer, setFooter] = useState<FooterData | null>(null);
@@ -18,7 +19,7 @@ export default function Footer() {
         console.log("API Response:", data);
 
         if (data.data) {
-          setFooter(data.data); // ✅ matches corrected types
+          setFooter(data.data);
         } else {
           console.warn("No footer data found");
         }
@@ -32,6 +33,12 @@ export default function Footer() {
 
   if (!footer) return <p className="text-center mt-10">Loading footer...</p>;
 
+  // ✅ social icon map
+  const iconMap: Record<string, React.ReactNode> = {
+    facebook: <FaFacebook size={18} />, // added size for visibility
+    linkedin: <FaLinkedin size={18} />,
+  };
+
   return (
     <footer className="bg-[#102e3c] text-white py-20">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -40,11 +47,11 @@ export default function Footer() {
           <Image
             src={
               footer.logo.url.startsWith("http")
-                ? footer.logo.url // already absolute URL
+                ? footer.logo.url
                 : `${
                     process.env.NEXT_PUBLIC_STRAPI_URL ||
                     "http://localhost:1337"
-                  }${footer.logo.url}` // relative URL
+                  }${footer.logo.url}`
             }
             alt={footer.logo.alternativeText || "Logo"}
             width={58}
@@ -55,25 +62,25 @@ export default function Footer() {
           <p className="text-white font-semibold text-lg leading-relaxed mb-4">
             {footer.paragraph}
           </p>
+
           {/* Social Icons */}
           <div className="flex gap-4 mt-4">
-            {footer.socaillink?.map((item) => (
-              <Link
-                key={item.id}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white border border-gray-300 rounded-full p-2"
-              >
-                <i
-                  className={
-                    typeof item.icon === "string"
-                      ? item.icon
-                      : item.icon?.url || ""
-                  }
-                ></i>
-              </Link>
-            ))}
+            {footer.socaillink?.map((item) => {
+              const key = item.logoText?.trim().toLowerCase() || ""; // ✅ trims space + lowercase
+              console.log("Social link:", item.logoText, "→", key);
+
+              return (
+                <Link
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-white border border-white rounded-full p-2 inline-flex items-center justify-center"
+                >
+                  {iconMap[key] || <span>{item.logoText}</span>}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
@@ -85,7 +92,7 @@ export default function Footer() {
               <li key={item.id}>
                 <Link
                   href={item.url}
-                  className="text-white  font-semibold text-md hover:text-[#219ebc] "
+                  className="text-white font-semibold text-md hover:text-[#219ebc]"
                 >
                   {item.text}
                 </Link>

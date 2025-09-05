@@ -33,7 +33,11 @@ export default async function Faq() {
     <section className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8 grid gap-12 md:grid-cols-[60%_40%]">
       {/* Left Column: Heading + Accordion */}
       <div>
-        <h2 className="text-sm sm:text-base inline-block border-1 border-[#219ebc] rounded-full text-[#219ebc] py-1.5 px-4 sm:py-2 sm:px-5 mb-3 sm:mb-4">
+        <h2
+          className="text-sm sm:text-base inline-block border border-[#219ebc] 
+               rounded-full text-[#219ebc] py-1.5 px-4 sm:py-2 sm:px-5 
+               mb-3 sm:mb-4 hover:bg-[#3199b3] hover:text-white"
+        >
           {faq.faq}
         </h2>
 
@@ -72,7 +76,7 @@ export default async function Faq() {
           </div>
         )}
 
-        <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">
+        <h3 className="text-lg sm:text-xl  font-semibold mb-2 sm:mb-3">
           {faq.text}
         </h3>
         <p className="text-sm sm:text-base text-gray-600 mb-4">{faq.subtext}</p>
@@ -80,9 +84,9 @@ export default async function Faq() {
         {faq.button && faq.button.url && (
           <Link
             href={faq.button.url}
-            className="inline-flex font-bold items-center gap-2 bg-[#219ebc] hover:bg-[#1b7a99] text-white px-5 sm:px-6 py-2 sm:py-3 rounded-full shadow transition"
+            className="inline-flex font-bold items-center gap-2 bg-[#219ebc] hover:bg-[#3199b3] text-white px-5 sm:px-6 py-2 sm:py-3 rounded-full shadow transition"
           >
-            <span>📞</span> {faq.button.label}
+            <span>📞</span> {faq.button.text}
           </Link>
         )}
       </div>

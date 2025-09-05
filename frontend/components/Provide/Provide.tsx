@@ -11,9 +11,15 @@ function ProvideList({ heading, subHeading, provide }: ProvideData) {
   return (
     <section className="px-6 py-12 max-w-6xl mx-auto">
       <div className="text-center">
-        <h2 className="text-sm sm:text-base font-semibold inline-block border-1 border-[#219ebc] rounded-full text-[#219ebc] py-1.5 px-4 sm:py-2 sm:px-5 mb-3 sm:mb-4">
+        <h2
+          className="text-sm sm:text-base font-semibold inline-block 
+             border border-[#219ebc] rounded-full text-[#219ebc] 
+             py-1.5 px-4 sm:py-2 sm:px-5 mb-3 sm:mb-4 
+             hover:bg-[#3199b3] hover:text-white hover:border-[#3199b3]"
+        >
           {heading}
         </h2>
+
         <p className="text-base sm:text-4xl font-bold mb-10">{subHeading}</p>
       </div>
 

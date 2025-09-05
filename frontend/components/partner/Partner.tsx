@@ -33,9 +33,9 @@ export default async function Partner() {
             {partner.button && partner.button.url && (
               <Link
                 href={partner.button.url}
-                className="inline-block text-white border border-white px-5 sm:px-6 py-2 sm:py-3 rounded-lg transition hover:bg-white hover:text-[#219ebc]"
+                className="inline-block text-white border border-white px-5 sm:px-6 py-2 sm:py-3 rounded-lg transition"
               >
-                {partner.button.label}
+                {partner.button.text}
               </Link>
             )}
           </div>

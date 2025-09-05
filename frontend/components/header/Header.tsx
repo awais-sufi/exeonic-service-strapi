@@ -38,11 +38,16 @@ export default function Header() {
         <Link href="/">
           <Image
             src={
-              header.logo.url.startsWith("http")
-                ? header.logo.url // already absolute
-                : `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${header.logo.url}` // relative URL, prepend API
+              header?.logo?.url
+                ? header.logo.url.startsWith("http")
+                  ? header.logo.url // absolute from Strapi (dev)
+                  : `${
+                      process.env.NEXT_PUBLIC_STRAPI_API_URL ||
+                      "http://localhost:1337"
+                    }${header.logo.url}` // prepend local or prod API
+                : "/placeholder.png" // fallback (must exist in /public)
             }
-            alt={header.logo.alternativeText || "Logo"}
+            alt={header?.logo?.alternativeText || "Logo"}
             width={100}
             height={30}
             className="object-contain"
@@ -65,12 +70,16 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-          <div className="flex space-x-3">
-            {header.button.map((btn) => (
+          <div className="flex space-x-3 font-semibold">
+            {header.button.map((btn, index) => (
               <Link
                 key={btn.id}
                 href={btn.url}
-                className="px-4 py-2 text-lg rounded-lg shadow-sm bg-[#219ebc] text-white  transition"
+                className={
+                  index === 0
+                    ? "px-4 py-2 text-lg rounded-lg shadow-sm border border-[#219ebc] bg-white text-[#219ebc] transition hover:bg-[#219ebc] hover:text-white"
+                    : "px-4 py-2 text-lg rounded-lg shadow-sm bg-[#219ebc] text-white transition "
+                }
               >
                 {btn.text}
               </Link>
